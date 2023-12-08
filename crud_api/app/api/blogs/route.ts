@@ -1,5 +1,5 @@
 // this file woll be handling thre request which is made to api/blogs
-import {getPosts} from "@/lib/data";
+import {addPost, getPosts} from "@/lib/data";
 import { NextResponse } from "next/server";
 
 export const GET = async (req: Request, res: Response) => {
@@ -18,5 +18,19 @@ export const GET = async (req: Request, res: Response) => {
 }
 
 export const POST = async (req: Request, res: Response) => {
-    console.log("POST request made to /api/blogs");
+    const { title, desc} = await req.json();
+    try{
+        const post = {title, desc, date:new Date(), id: Date.now().toString()};
+        addPost(post);
+        return NextResponse.json({message : "OK",post},{status:201});
+
+    }catch(error){
+        return NextResponse.json(
+            {message : "Error" , error},
+            {
+                status:500,
+            }
+            );
+        }
+        
 };

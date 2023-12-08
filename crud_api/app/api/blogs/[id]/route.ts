@@ -1,14 +1,45 @@
+import { deletePOST, getById, updatePOST } from "@/lib/data";
+import { NextResponse } from "next/server";
+
+
 export const GET = async (req: Request) => {
-    console.log("GET request made to /api/blogs/:id");
-    //DELETE a post by id from the database
+    try{
+        const id = req.url.split("blogs/")[1];
+        const post = getById(id)
+        if (!post ){
+            return NextResponse.json({message : "Not Found"},{status:404});
+        }
+        return NextResponse.json({message : "OK",post},{status:200});
+    }catch(error){
+        return NextResponse.json(
+            {message : "Error" , error},
+            {
+                status:500,
+            }
+        );
+    }
 };
 
 export const PUT = async (req: Request) => {
-    console.log("PUT request made to /api/blogs/:id");
     //PUT a post by id from the database
+    try{
+        const {title,desc }= await req.json();
+        const id = req.url.split("blogs/")[1];
+        updatePOST(id,title,desc)
+        return NextResponse.json({message:"OK"},{status:200});
+    }catch(error){
+        return NextResponse.json({message:"ERROR",error},{status:500})
+    }
+
 };
 
 export const DELETE = async (req: Request) => {
-    console.log("DELETE request made to /api/blogs/:id");
-    //DELETE a post by id from the database
+    try{
+        
+        const id = req.url.split("blogs/")[1];
+        deletePOST(id)
+        return NextResponse.json({message:"OK"},{status:200});
+    }catch(error){
+        return NextResponse.json({message:"ERROR",error},{status:500})
+    }
 };

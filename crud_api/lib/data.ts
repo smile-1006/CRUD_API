@@ -2,7 +2,7 @@ import { POST } from "@/app/api/blogs/route";
 import exp from "constants";
 
 type POST = {
-    id: number;
+    id: string;
     title: string;
     desc: string;
     date: Date;
@@ -19,11 +19,11 @@ export const addPost = (post: POST) => {
     posts.push(post);
 }
 
-export const deletePOST = (id: number) => {
+export const deletePOST = (id: string) => {
     posts= posts.filter((post) => post.id !== id);
 }
 
-export const updatePOST = (id: number, title: string , desc : string) => {
+export const updatePOST = (id: string, title: string , desc : string) => {
     const post =posts.find((post) => post.id === id);
     if(post){
         post.title = title;
@@ -34,7 +34,7 @@ export const updatePOST = (id: number, title: string , desc : string) => {
     }
 };
 
-export const getPostById = (id: number) => {
+export const getById = (id: string) => {
     return posts.find((post) => post.id === id);
 
 };
